@@ -21,12 +21,4 @@ Route::middleware([
     Route::get('/passwd/delete/{id}', [DashboardController::class, 'delete'])->name('password.delete');
     Route::get('/passwords/{id}', [DashboardController::class, 'show'])->name('passwords.show');
 
-    // clear route
-    Route::get('/clear', function () {
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
-        Artisan::call('config:cache');
-        Artisan::call('view:clear');
-        return "Cleared!";
-    });
 });
