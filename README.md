@@ -1,6 +1,7 @@
 # PasswordBox - Laravel Based Password Manager
+![image](https://github.com/user-attachments/assets/55f21fa1-54fb-4f8c-8dae-97d91d587f7b)
 
-Here are the possable features that can be added into this project!
+Here are the possible features that can be added to this project!
 ---
 
 ## 🔐 **Authentication & Security**
