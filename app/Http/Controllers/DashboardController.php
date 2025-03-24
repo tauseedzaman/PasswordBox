@@ -65,6 +65,7 @@ class DashboardController extends Controller
             'title' => $domain,
             'username' => $request->username,
             'password' => $request->password,
+            'notes' => $request->notes,
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Password updated successfully');
@@ -84,8 +85,6 @@ class DashboardController extends Controller
     {
         $password = Password::where('user_id', auth()->id())->findOrFail($id);
 
-        return response()->json([
-            'html' => view('password.show', compact('password'))->render()
-        ]);
+        return view('password.show', compact('password'));
     }
 }

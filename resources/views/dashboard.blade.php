@@ -1,4 +1,20 @@
 <x-app-layout>
+    <style>
+        <style>#password-modal {
+            display: none;
+        }
+
+        #password-modal:not(.hidden) {
+            display: flex;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -39,12 +55,34 @@
             </div>
 
 
-            @livewire('password-modal')
-
             @push('scripts')
+            <!-- Custom Modal -->
+            <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white p-4 rounded-lg w-full max-w-4xl relative shadow-lg shadow-gray-500/50" style="box-shadow: 0px 0px 9px 9px gray;">
+                    <!-- Close Button -->
+                    <div class="flex justify-end">
+                        <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-xl" style="    font-size: 60px;
+                        ">
+                            &times;
+                        </button>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div id="modal-content" class="mb-3">
+                        Loading...
+                    </div>
+
+                    <!-- Close Button -->
+                    <button onclick="closeModal()" class="bg-gray-500 text-white px-3 py-1 rounded">Close</button>
+                </div>
+            </div>
+
             <script>
                 function viewPassword(id) {
-                    // Show loading screen
+                    const modal = document.getElementById('password-modal');
+                    const modalContent = document.getElementById('modal-content');
+
+                    // Show loading indicator with SweetAlert
                     Swal.fire({
                         title: 'Loading...'
                         , allowOutsideClick: false
@@ -53,20 +91,37 @@
                         }
                     });
 
-                    setTimeout(() => {
-                        Swal.close();
-                        window.Livewire.dispatch('showPasswordModal', {
-                            id: id
+                    // Fetch the password details
+                    fetch(`/passwords/${id}`)
+                        .then(response => {
+                            if (!response.ok) throw new Error('Failed to load password details.');
+                            return response.text(); // Expecting HTML content
+                        })
+                        .then(html => {
+                            Swal.close(); // Close the loading screen
+                            modalContent.innerHTML = html; // Set the modal content
+                            modal.classList.remove('hidden'); // Show the modal
+                        })
+                        .catch(error => {
+                            Swal.close();
+                            alert('Error loading password details!');
+                            console.error('Error:', error);
                         });
-                    }, 1500); // Adjust the delay as needed
                 }
 
+                function copyToClipboard(text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        Swal.fire({
+                            title: 'Copied!'
+                            , icon: 'success'
+                        });
+                    });
+                }
+
+                // Close Modal Function
                 function closeModal() {
-                    document.getElementById('passwordModal').classList.add('hidden');
+                    document.getElementById('password-modal').classList.add('hidden');
                 }
-
-
-
 
                 function deletePassword(url) {
                     Swal.fire({
@@ -87,6 +142,5 @@
             </script>
             @endpush
         </div>
-    </div>
     </div>
 </x-app-layout>
