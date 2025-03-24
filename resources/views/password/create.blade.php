@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Password') }}
+            {{ __('Create New Credentails') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-4 lg:px-6">
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <h1 class="text-2xl font-bold text-gray-800 mb-6">Create New Password</h1>
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">Create New Credentails</h1>
 
                 <form method="POST" action="{{ route('password.store') }}">
                     @csrf

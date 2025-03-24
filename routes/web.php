@@ -12,7 +12,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/{search?}', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/passwd/create', [DashboardController::class, 'create'])->name('password.create');
     Route::post('/passwd/store', [DashboardController::class, 'store'])->name('password.store');
